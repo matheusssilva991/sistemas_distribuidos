@@ -1,5 +1,7 @@
 # Projetos Sistemas Distribuídos
 
+Neste repositório contém projetos realizados na disciplina Sistemas Distribuidos na UESC 2024.1
+
 ## Índice
 
 * [Projetos](#projetos)
@@ -9,7 +11,7 @@
 
 ## Projetos
 
-1. [Jogo quatro em linha]("https://github.com/matheusssilva991/sistemas_distribuidos/jogo_quatro_linhas")
+* [Jogo quatro em linha]("https://github.com/matheusssilva991/sistemas_distribuidos/jogo_quatro_linhas")
 
 ## Contribuições
 
