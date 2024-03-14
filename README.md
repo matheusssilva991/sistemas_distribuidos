@@ -11,7 +11,7 @@ Neste repositório contém projetos realizados na disciplina Sistemas Distribuid
 
 ## Projetos
 
-* [Jogo quatro em linha](https://github.com/matheusssilva991/sistemas_distribuidos/jogo_quatro_linha)
+* [Jogo quatro em linha](https://github.com/matheusssilva991/sistemas_distribuidos/tree/main/jogo_quatro_linha)
 
 ## Contribuições
 
