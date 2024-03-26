@@ -17,7 +17,6 @@ class Client:
         board = self.server.get_board()
 
         table = tabulate(board, headers='firstrow', tablefmt='simple_grid',
-                         stralign='center', showindex='always')
+                         stralign='center')
 
         print(table)
-        print("\n")
