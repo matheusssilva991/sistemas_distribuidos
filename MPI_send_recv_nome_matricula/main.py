@@ -15,16 +15,16 @@ for id_processo in range(size):
 
         print(f"Processo {rank} enviando mensagem para processo {id_processo}")
 
-        # comm.send(nome, dest=id_processo)
-        # comm.send(matricula, dest=id_processo)
-        comm.send([nome, matricula], dest=id_processo)
+        comm.send(nome, dest=id_processo)
+        comm.send(matricula, dest=id_processo)
+        # comm.send([nome, matricula], dest=id_processo)
 
 # Demais processos recebem a mensagem do processo 0
 if rank != ID_PROCESSO_MESTRE:
-    # nome_recebido = comm.recv(source=ID_PROCESSO_MESTRE)
-    # matricula_recebida = comm.recv(source=ID_PROCESSO_MESTRE)
-    mensagem_recebida = comm.recv(source=ID_PROCESSO_MESTRE)
+    nome_recebido = comm.recv(source=ID_PROCESSO_MESTRE)
+    matricula_recebida = comm.recv(source=ID_PROCESSO_MESTRE)
+    # mensagem_recebida = comm.recv(source=ID_PROCESSO_MESTRE)
 
-    # mensagem_recebida = [nome_recebido, matricula_recebida]
+    mensagem_recebida = [nome_recebido, matricula_recebida]
     print("Processo {} recebeu mensagens do processo {}: {}"
           .format(rank, ID_PROCESSO_MESTRE, mensagem_recebida))

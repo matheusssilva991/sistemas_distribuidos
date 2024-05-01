@@ -3,6 +3,8 @@ from client.client import Client
 client = Client("http://localhost:8000/")
 
 while not client.server.get_has_winner() and client.server.has_empty_cells():
+    print("You are player", client.player_id)
+    print("Players:", client.server.get_players())
     print(f"Player {client.server.get_current_player()} turn")
 
     client.show_board()
@@ -34,6 +36,8 @@ while not client.server.get_has_winner() and client.server.has_empty_cells():
 
         if client.server.get_has_winner():
             break
+
+        print("\n\n")
     else:
         print("Waiting for the other player to play...\n\n")
         board = client.server.get_board()

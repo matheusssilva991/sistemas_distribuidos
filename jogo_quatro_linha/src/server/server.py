@@ -16,6 +16,9 @@ class Server:
     def get_board(self) -> list:
         return self.__board
 
+    def set_board(self, board: list) -> None:
+        self.__board = board
+
     def get_empty_row(self, column) -> int:
         for i in range(self.__num_rows - 1, 0, -1):
             if ' ' == self.__board[i][column]:
@@ -44,17 +47,30 @@ class Server:
 
         # Check row
         for i in range(5):
-            start = i
-            if all([self.__board[row][start + j] ==
+            if all([self.__board[row][i + j] ==
                     self.__markers[self.__current_player] for j in range(4)]):
                 return True
 
         # Check column
         for i in range(5):
-            start = i
-            if all([self.__board[start + 1 + j][col] ==
+            if all([self.__board[i + 1 + j][col] ==
                     self.__markers[self.__current_player] for j in range(4)]):
                 return True
+
+        # Check main diagonal
+        starts = [0, 0]
+        if row > col + 1:
+            starts[0] = row - (col + 1) + 1
+        else:
+            starts[1] = (col + 1) - row
+
+        """ if starts[0] <= 5 and starts[1] <= 4:
+            for i in range(5):
+                # check if the player has won in the main diagonal
+                if all([self.__board[i + j + starts[0]][starts[1] + j + i] ==
+                        self.__markers[self.__current_player]
+                        for j in range(4)]):
+                    return True """
 
         return False
 
@@ -87,7 +103,9 @@ class Server:
         return {"status": True, "error": None, "player": self.__current_player}
 
 
-server = xmlrpc.server.SimpleXMLRPCServer(("localhost", 8000), allow_none=True,
-                                          logRequests=False)
-server.register_instance(Server())
-server.serve_forever()
+if __name__ == '__main__':
+    server = xmlrpc.server.SimpleXMLRPCServer(("localhost", 8000),
+                                              allow_none=True,
+                                              logRequests=False)
+    server.register_instance(Server())
+    server.serve_forever()
