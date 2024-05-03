@@ -15,6 +15,8 @@ class Client:
 
     def show_board(self):
         board = self.server.get_board()
+        index_column = [list(range(len(board[0])))]
+        board = index_column + board
 
         table = tabulate(board, headers='firstrow', tablefmt='simple_grid',
                          stralign='center')

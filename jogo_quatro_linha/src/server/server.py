@@ -4,10 +4,9 @@ import xmlrpc.server
 class Server:
     def __init__(self) -> None:
         self.__num_cols = 8
-        self.__num_rows = 9
+        self.__num_rows = 8
         self.__board = [[' ' for _ in range(self.__num_cols)]
                         for _ in range(self.__num_rows)]
-        self.__board[0] = [str(i) for i in range(self.__num_cols)]
         self.__players = []
         self.__current_player = 0
         self.__markers = ["X", "O"]
@@ -20,7 +19,7 @@ class Server:
         self.__board = board
 
     def get_empty_row(self, column) -> int:
-        for i in range(self.__num_rows - 1, 0, -1):
+        for i in range(self.__num_rows - 1, -1, -1):
             if ' ' == self.__board[i][column]:
                 return {"row": i, "status": True, "error": None}
         return {"error": "No empty rows", "status": False}
@@ -42,7 +41,7 @@ class Server:
     def check_winner(self, pos: tuple) -> bool:
         row, col = pos
 
-        if col > 7 or row > 8:
+        if col > 7 or row > 7 or row < 0 or col < 0:
             raise IndexError("Invalid position")
 
         # Check row
@@ -53,26 +52,29 @@ class Server:
 
         # Check column
         for i in range(5):
-            if all([self.__board[i + 1 + j][col] ==
+            if all([self.__board[i + j][col] ==
                     self.__markers[self.__current_player] for j in range(4)]):
                 return True
 
         # Check main diagonal
         starts = [0, 0]
-        if row > col + 1:
-            starts[0] = row - (col + 1) + 1
-        else:
-            starts[1] = (col + 1) - row
+        if row > col:
+            starts[0] = row - col
+        elif row < col:
+            starts[1] = col - row
 
-        """ if starts[0] <= 5 and starts[1] <= 4:
-            for i in range(5):
-                # check if the player has won in the main diagonal
-                if all([self.__board[i + j + starts[0]][starts[1] + j + i] ==
-                        self.__markers[self.__current_player]
-                        for j in range(4)]):
-                    return True """
+        # Check if not possible to have a winner in the main diagonal
+        if starts[0] > 4 or starts[1] > 4:
+            return False
 
-        return False
+        for i in range(5 - starts[0] - starts[1]):
+            # check if the player has won in the main diagonal
+            if all([self.__board[i + j + starts[0]][starts[1] + j + i] ==
+                    self.__markers[self.__current_player]
+                    for j in range(4)]):
+                return True
+
+        return True
 
     def has_empty_cells(self) -> bool:
         for row in self.__board[1:]:
