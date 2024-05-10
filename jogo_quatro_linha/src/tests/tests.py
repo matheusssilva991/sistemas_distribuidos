@@ -16,15 +16,17 @@ def show_board(board):
 class Test(unittest.TestCase):
     def test_get_empty_row(self):
         server = Server()
+        num_rows, num_cols = server.get_board_dimensions()
 
         # Test when there is an empty row
-        for i in range(8):
+        for i in range(num_cols):
             self.assertEqual(server.get_empty_row(i),
-                             {"row": 7, "status": True, "error": None})
+                             {"row": num_cols - 1, "status": True,
+                              "error": None})
 
         # Test when there is no empty row
-        for i in range(8):
-            for j in range(8):
+        for i in range(num_cols):
+            for j in range(num_rows):
                 board = server.get_board()
                 board[j][i] = 'X'
                 server.set_board(board)
@@ -34,14 +36,15 @@ class Test(unittest.TestCase):
 
     def test_has_empty_cells(self):
         server = Server()
+        num_rows, num_cols = server.get_board_dimensions()
 
         # Test when there are empty cells
         self.assertTrue(server.has_empty_cells())
 
         # Test when there are no empty cells
         board = server.get_board()
-        for i in range(8):
-            for j in range(8):
+        for i in range(num_rows):
+            for j in range(num_cols):
                 board[i][j] = 'X'
         server.set_board(board)
         self.assertFalse(server.has_empty_cells())
@@ -71,62 +74,60 @@ class Test(unittest.TestCase):
     def test_check_has_winner(self):
         server = Server()
         empty_board = deepcopy(server.get_board())
+        num_rows, num_cols = server.get_board_dimensions()
+        points_to_win = server.get_points_to_win()
+        lim_middle_rows = num_rows - points_to_win + 1
+        lim_middle_cols = num_cols - points_to_win + 1
 
-        """         # Test when there is no winner
-        for i in range(8):
-            for j in range(8):
+        # Test when there is no winner
+        for i in range(num_rows):
+            for j in range(num_cols):
+                if server.check_winner((i, j)):
+                    print(i, j)
                 self.assertFalse(server.check_winner((i, j)))
 
         # Test when there is a winner in a row
-        for i in range(8):
-            for j in range(5):
+        for i in range(num_rows):
+            for j in range(lim_middle_cols):
                 # Reset the board
                 board = deepcopy(empty_board)
                 server.set_board(board)
 
                 # Set the board to have a winner
-                for k in range(4):
+                for k in range(points_to_win):
                     board[i][j + k] = 'X'
                 server.set_board(board)
 
                 self.assertTrue(server.check_winner((i, j)))
 
         # Test when there is a winner in a column
-        for i in range(8):
-            for j in range(5):
+        for i in range(num_cols):
+            for j in range(lim_middle_rows):
                 # Reset the board
                 board = deepcopy(empty_board)
                 server.set_board(board)
 
                 # Set the board to have a winner
-                for k in range(4):
+                for k in range(points_to_win):
                     board[j + k][i] = 'X'
                 server.set_board(board)
 
                 self.assertTrue(server.check_winner((j, i)))
-        """
+
         # Test when there is a winner in the main diagonal and row >= col
-        for i in range(5):
-            for offset in range(5 - i):
+        for i in range(lim_middle_rows):
+            for offset in range((lim_middle_rows) - i):
                 board = deepcopy(empty_board)
-                for j in range(4):
+                for j in range(points_to_win):
                     board[i + j + offset][j + offset] = 'X'
                 server.set_board(board)
                 self.assertTrue(server.check_winner((i, 0)))
-        board = server.get_board()
 
         # Test when there is a winner in the main diagonal and row < col
-        for i in range(1, 5):
-            for offset in range(5 - i):
+        for i in range(lim_middle_cols):
+            for offset in range(lim_middle_cols - i):
                 board = deepcopy(empty_board)
-                for j in range(4):
+                for j in range(points_to_win):
                     board[j + offset][i + j + offset] = 'X'
                 server.set_board(board)
                 self.assertTrue(server.check_winner((0, i)))
-
-        """ # Test when there is a winner in the secondary diagonal
-        board = server.get_board()
-        for i in range(4):
-            board[i + 1][3 - i] = 'X'
-        server.set_board(board)
-        self.assertTrue(server.check_winner()) """

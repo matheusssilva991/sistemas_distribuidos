@@ -4,7 +4,6 @@ client = Client("http://localhost:8000/")
 
 while not client.server.get_has_winner() and client.server.has_empty_cells():
     print("You are player", client.player_id)
-    print("Players:", client.server.get_players())
     print(f"Player {client.server.get_current_player()} turn")
 
     client.show_board()
@@ -39,7 +38,7 @@ while not client.server.get_has_winner() and client.server.has_empty_cells():
 
         print("\n\n")
     else:
-        print("Waiting for the other player to play...\n\n")
+        print("Waiting for the other player to play...")
         board = client.server.get_board()
         new_board = client.server.get_board()
         while board == new_board:
@@ -53,5 +52,6 @@ else:
     if client.server.get_current_player() == client.player_id:
         print("\n\t\t\tYou won!")
     else:
-        print(f"\t\t\tPlayer {client.server.get_current_player()} won!")
+        current_player = client.server.get_current_player()
+        print(f"\t\t\tYou lost, player {current_player} won!")
     client.show_board()
