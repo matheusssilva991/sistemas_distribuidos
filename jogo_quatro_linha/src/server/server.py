@@ -82,16 +82,33 @@ class Server:
             starts[1] = col - row
 
         # Check if not possible to have a winner in the main diagonal
-        if starts[0] > self.__num_rows - self.__points_to_win or \
-           starts[1] > self.__num_cols - self.__points_to_win:
-            return False
+        if not (starts[0] > self.__num_rows - self.__points_to_win or
+           starts[1] > self.__num_cols - self.__points_to_win):
 
-        for i in range(self.__lim_middle_cols - starts[0] - starts[1]):
             # check if the player has won in the main diagonal
-            if all([self.__board[i + j + starts[0]][starts[1] + j + i] ==
-                    self.__markers[self.__current_player]
-                    for j in range(self.__points_to_win)]):
-                return True
+            for i in range(self.__lim_middle_cols - starts[0] - starts[1]):
+                if all([self.__board[i + j + starts[0]][starts[1] + j + i] ==
+                        self.__markers[self.__current_player]
+                        for j in range(self.__points_to_win)]):
+                    return True
+
+        # Check secondary diagonal
+        starts = [0, self.__num_cols - 1]
+        if row + col <= self.__num_cols - 1:
+            starts[1] = row + col
+        elif row + col > self.__num_cols - 1:
+            starts[0] = (row + col) - (self.__num_cols - 1)
+
+        # Check if not possible to have a winner in the secondary diagonal
+        if not (row + col > self.__num_rows + self.__points_to_win - 1 or
+           row + col < self.__points_to_win - 1):
+
+            for i in range(self.__lim_middle_rows - starts[0]):
+                # check if the player has won in the secondary diagonal
+                if all([self.__board[j + i + starts[0]][starts[1] - j - i] ==
+                        self.__markers[self.__current_player]
+                        for j in range(self.__points_to_win)]):
+                    return True
 
         return False
 
@@ -121,6 +138,6 @@ class Server:
 if __name__ == '__main__':
     server = xmlrpc.server.SimpleXMLRPCServer(("localhost", 8000),
                                               allow_none=True,
-                                              logRequests=False)
+                                              logRequests=True)
     server.register_instance(Server())
     server.serve_forever()
