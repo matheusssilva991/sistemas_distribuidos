@@ -12,6 +12,7 @@ Neste repositório contém projetos realizados na disciplina Sistemas Distribuid
 ## Projetos
 
 * [Jogo quatro em linha](https://github.com/matheusssilva991/sistemas_distribuidos/tree/main/jogo_quatro_linha)
+* [Atividade MPI](https://github.com/matheusssilva991/sistemas_distribuidos/tree/main/MPI_send_recv_nome_matricula)
 
 ## Contribuições
 
