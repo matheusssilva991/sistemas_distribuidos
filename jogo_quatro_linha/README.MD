@@ -22,7 +22,8 @@ Em seguida, você deve criar um ambiente virtual ou ambiente Anaconda para insta
 Para criar um ambiente virtual com Python, você pode usar o seguinte comando:
 
 ```bash
-python -m venv [nome-do-ambiente]
+python -m venv [nome-do-ambiente] # Windows
+python3 -m venv [nome-do-ambiente] # Linux
 ```
 
 Para ativar o ambiente virtual, você pode usar o seguinte comando:
@@ -58,13 +59,22 @@ deactivate
 Para rodar o servidor
 
 ```bash
-python src/server/server.py
+python3 src/server/server.py # Linux
+python src/server/server.py # Windows
 ```
 
 Para rodar o cliente
 
 ```bash
-python src/main.py
+python3 src/client/client.py # Linux
+python src/client/client.py # Windows
+```
+
+### Rodar os testes
+
+```bash
+python3 -m unittest src/tests/tests.py -v # Linux
+python -m unittest src/tests/tests.py -v # Windows
 ```
 
 ## Contribuições
