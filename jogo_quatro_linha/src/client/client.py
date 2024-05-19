@@ -7,7 +7,7 @@ class Client:
         self.server = xmlrpc.client.ServerProxy(url, allow_none=True)
         result = self.server.add_players()
 
-        if result['status']:
+        if result['success']:
             self.player_id = result['player_id']
         else:
             print(result['error'])
@@ -43,7 +43,7 @@ if __name__ == "__main__":
                 result = client.server.get_empty_row(col)
 
                 # If there's an error, print it and try again
-                if result['error']:
+                if not result['success']:
                     print(result['error'])
                     continue
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 result = client.server.set_play((row, col))
 
                 # If there's an error, print it and try again
-                if result['error']:
+                if result['success']:
                     print(result['error'])
                     continue
                 # If the position is valid, break the loop
@@ -78,5 +78,5 @@ if __name__ == "__main__":
             print("\n\t\t\tYou won!")
         else:
             current_player = client.server.get_current_player()
-            print(f"\t\t\tYou lost, player {current_player} won!")
+            print(f"\n\t\t\tYou lost, player {current_player} won!")
         client.show_board()

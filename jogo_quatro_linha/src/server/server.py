@@ -36,8 +36,8 @@ class Server:
     def get_empty_row(self, column) -> int:
         for i in range(self.__num_rows - 1, -1, -1):
             if ' ' == self.__board[i][column]:
-                return {"row": i, "status": True, "error": None}
-        return {"error": "No empty rows", "status": False}
+                return {"row": i, "success": True, "error": None}
+        return {"error": "No empty rows", "success": False}
 
     def set_play(self, pos: tuple) -> bool:
         row, col = pos
@@ -47,11 +47,11 @@ class Server:
                 self.__has_winner = self.check_winner(pos)
                 if not self.__has_winner:
                     self.update_current_player()
-                return {"status": True, "error": None}
+                return {"success": True, "error": None}
             else:
-                return {"error": "Position already taken", "status": False}
+                return {"error": "Position already taken", "success": False}
         except IndexError:
-            return {"error": "Invalid position", "status": False}
+            return {"error": "Invalid position", "success": False}
 
     def check_winner(self, pos: tuple) -> bool:
         row, col = pos
@@ -122,22 +122,27 @@ class Server:
         if len(self.__players) < 2:
             player_id = len(self.__players)
             self.__players.append(player_id)
-            return {"player_id": player_id, "status": True}
+            return {"player_id": player_id, "success": True}
         else:
             return {"error": "Maximum number of players reached",
-                    "status": False}
+                    "success": False}
 
     def get_current_player(self) -> list:
         return self.__current_player
 
     def update_current_player(self) -> dict:
         self.__current_player = (self.__current_player + 1) % 2
-        return {"status": True, "error": None, "player": self.__current_player}
+        return {"success": True, "error": None,
+                "player": self.__current_player}
 
 
 if __name__ == '__main__':
-    server = xmlrpc.server.SimpleXMLRPCServer(("localhost", 8000),
-                                              allow_none=True,
-                                              logRequests=True)
-    server.register_instance(Server())
-    server.serve_forever()
+    IP = "localhost"
+    PORT = 8000
+
+    with xmlrpc.server.SimpleXMLRPCServer((IP, PORT),
+                                          allow_none=True,
+                                          logRequests=True) as server:
+        server.register_instance(Server())
+        print(f"Server started and running in {IP}:{PORT}")
+        server.serve_forever()

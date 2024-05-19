@@ -11,7 +11,7 @@ class Test(unittest.TestCase):
         # Test when there is an empty row
         for i in range(num_cols):
             self.assertEqual(server.get_empty_row(i),
-                             {"row": num_cols - 1, "status": True,
+                             {"row": num_cols - 1, "success": True,
                               "error": None})
 
     def test_has_no_empty_row(self):
@@ -26,7 +26,7 @@ class Test(unittest.TestCase):
                 server.set_board(board)
             self.assertEqual(server.get_empty_row(i),
                              {"error": "No empty rows",
-                              "status": False})
+                              "success": False})
 
     def test_has_empty_cells(self):
         server = Server()
@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
         # Test when is possible to add players
         for i in range(2):
             self.assertEqual(server.add_players(),
-                             {"player_id": i, "status": True})
+                             {"player_id": i, "success": True})
 
     def test_it_is_not_possible_to_add_players(self):
         server = Server()
@@ -63,16 +63,16 @@ class Test(unittest.TestCase):
         # Test when is not possible to add players
         self.assertEqual(server.add_players(),
                          {"error": "Maximum number of players reached",
-                          "status": False})
+                          "success": False})
 
     def test_update_current_player(self):
         server = Server()
 
         # Test when the current player is updated
         self.assertEqual(server.update_current_player(),
-                         {"status": True, "error": None, "player": 1})
+                         {"success": True, "error": None, "player": 1})
         self.assertEqual(server.update_current_player(),
-                         {"status": True, "error": None, "player": 0})
+                         {"success": True, "error": None, "player": 0})
 
     def test_check_has_no_winner(self):
         server = Server()
