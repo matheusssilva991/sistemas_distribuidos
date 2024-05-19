@@ -113,7 +113,7 @@ class Server:
         return False
 
     def has_empty_cells(self) -> bool:
-        for row in self.__board[1:]:
+        for row in self.__board:
             if ' ' in row:
                 return True
         return False
