@@ -103,7 +103,8 @@ class Server:
         if not (row + col > self.__num_rows + self.__points_to_win - 1 or
            row + col < self.__points_to_win - 1):
 
-            for i in range(self.__lim_middle_rows - starts[0]):
+            for i in range(self.__lim_middle_rows - starts[0] -
+                           (self.__num_cols - 1 - starts[1])):
                 # check if the player has won in the secondary diagonal
                 if all([self.__board[j + i + starts[0]][starts[1] - j - i] ==
                         self.__markers[self.__current_player]
