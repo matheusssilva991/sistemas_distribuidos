@@ -40,8 +40,8 @@ if __name__ == "__main__":
                 except ValueError:
                     print("Invalid column")
                     continue
-                result = client.server.get_empty_row(col)
 
+                result = client.server.get_empty_row(col)
                 # If there's an error, print it and try again
                 if not result['success']:
                     print(result['error'])
@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 result = client.server.set_play((row, col))
 
                 # If there's an error, print it and try again
-                if result['success']:
+                if not result['success']:
                     print(result['error'])
                     continue
                 # If the position is valid, break the loop
