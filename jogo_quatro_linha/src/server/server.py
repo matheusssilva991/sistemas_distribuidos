@@ -34,6 +34,9 @@ class Server:
         return self.__num_rows, self.__num_cols
 
     def get_empty_row(self, column) -> int:
+        if column < 0 or column >= self.__num_cols - 1:
+            return {"error": "Invalid column", "success": False}
+
         for i in range(self.__num_rows - 1, -1, -1):
             if ' ' == self.__board[i][column]:
                 return {"row": i, "success": True, "error": None}
