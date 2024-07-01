@@ -1,26 +1,25 @@
 def check_causal_vector_size(causal_vector: list,
                              recv_causal_vector: list,
                              size: int) -> None:
-    if len(causal_vector) != len(recv_causal_vector) and \
-            len(causal_vector) != size and \
+    if len(causal_vector) != size or \
             len(recv_causal_vector) != size:
         raise ValueError('Both vectors must have the same size')
 
 
 def check_causal_vector_elements(causal_vector: list,
                                  recv_causal_vector: list) -> None:
-    for causal, recv in zip(causal_vector, recv_causal_vector):
-        if causal < 0 or recv < 0:
-            raise ValueError('All elements in causal_vector and '
-                             'recv_causal_vector must be positive')
+    if any(causal < 0 or recv < 0 for causal, recv in zip(causal_vector,
+                                                          recv_causal_vector)):
+        raise ValueError('All elements in causal_vector and',
+                         'recv_causal_vector must be positive')
 
 
 def check_causal_vector_types(causal_vector: list,
                               recv_causal_vector: list) -> None:
-    for causal, recv in zip(causal_vector, recv_causal_vector):
-        if not isinstance(causal, int) or not isinstance(recv, int):
-            raise ValueError('All elements in causal_vector and '
-                             'recv_causal_vector must be integers')
+    if any(not isinstance(causal, int) or not isinstance(recv, int)
+           for causal, recv in zip(causal_vector, recv_causal_vector)):
+        raise ValueError('All elements in causal_vector and',
+                         'recv_causal_vector must be integers')
 
 
 def check_causal_vector_error(causal_vector: list,
