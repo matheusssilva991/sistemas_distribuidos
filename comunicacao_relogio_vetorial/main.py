@@ -2,7 +2,7 @@ from mpi4py import MPI  # noqa
 from utils.utils import update_causal_vector, check_causality_condition
 
 TIME_LIMIT = 20
-TIME_UPDATE = 1 / 100
+TIME_UPDATE = 1 / 1000
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
